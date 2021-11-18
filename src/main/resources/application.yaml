@@ -1,0 +1,21 @@
+server:
+  port: 8002
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://152.136.26.27:33306/lmSystemv1?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123456
+    hikari:
+      connection-timeout: 60000
+      validation-timeout: 3000
+      idle-timeout: 50000
+      login-timeout: 5
+      max-lifetime: 60000
+      maximum-pool-size: 200
+      minimum-idle: 10
+      read-only: false
+mybatis:
+  type-aliases-package: qd.cs.koi.database.entity
