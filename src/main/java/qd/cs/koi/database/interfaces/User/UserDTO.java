@@ -62,8 +62,4 @@ public class UserDTO extends BaseDTO {
     private Integer gender;
 
     private List<String> roles;
-
-    // 邮箱验证码，用于注册
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String emailCode;
 }

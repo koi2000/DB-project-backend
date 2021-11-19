@@ -2,7 +2,6 @@ package qd.cs.koi.database.interfaces.Book;
 
 import lombok.*;
 import qd.cs.koi.database.utils.entity.BaseDTO;
-import sun.rmi.runtime.Log;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

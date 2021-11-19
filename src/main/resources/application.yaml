@@ -19,3 +19,7 @@ spring:
       read-only: false
 mybatis:
   type-aliases-package: qd.cs.koi.database.entity
+
+lab:
+  files:
+    baseDir: F:\课程之外\lab_website\image

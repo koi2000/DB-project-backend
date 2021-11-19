@@ -38,6 +38,5 @@ public class StorageDO extends BaseDO {
     private Long bookId;
 
     @TableField(StorageDOField.NUMBER)
-    @Version
     private Integer number;
 }

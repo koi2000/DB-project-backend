@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import qd.cs.koi.database.interfaces.User.UserDTO;
+import qd.cs.koi.database.interfaces.User.UserProfileDTO;
+import qd.cs.koi.database.interfaces.User.UserUpdateDTO;
 import qd.cs.koi.database.service.user.UserExtensionService;
 import qd.cs.koi.database.service.user.UserService;
 import qd.cs.koi.database.utils.annations.UserSession;
@@ -75,6 +77,32 @@ public class UserController {
         //response.addCookie(cookie);
     }
 
+    @GetMapping("/getProfile")
+    @ResponseBody
+    public ResponseResult<UserProfileDTO> getProfile(@UserSession UserSessionDTO userSessionDTO){
+        UserProfileDTO profile = userService.getProfile(userSessionDTO);
+        return ResponseResult.ok(profile);
+    }
+
+
+    @GetMapping("/session")
+    @ResponseBody
+    public String session(HttpServletResponse response,
+                       @UserSession UserSessionDTO userSessionDTO) throws UnsupportedEncodingException {
+        return JSON.toJSONString(userSessionDTO);
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public ResponseResult<Long> update(@UserSession UserSessionDTO userSessionDTO,
+                                       @RequestBody UserUpdateDTO userUpdateDTO){
+        //不允许用户修改自己的身份
+        userUpdateDTO.setRoles(null);
+        Long update = userService.update(userSessionDTO, userUpdateDTO);
+        return ResponseResult.ok(update);
+    }
+
+
     private void writeSessionToHeader(@NotNull HttpServletResponse response,
                                       @Nullable UserSessionDTO userSessionDTO) throws Exception {
 
@@ -91,12 +119,6 @@ public class UserController {
             //设置允许该返回头被查看到
             response.setHeader("Access-Control-Expose-Headers", "UserInfo");
         }
-    }
-
-    @GetMapping("/session")
-    public String nnsa(HttpServletResponse response,
-                       @UserSession UserSessionDTO userSessionDTO) throws UnsupportedEncodingException {
-        return JSON.toJSONString(userSessionDTO);
     }
 
 }

@@ -64,8 +64,8 @@ public enum ApiExceptionEnum {
     USER_EXIST(400, "用户名已存在或邮箱已被使用"),
     EMAIL_EXIST(400, "邮箱已存在"),
 
+    TIME_TOO_LONG(400,"借书时间过长"),
     BOOK_NOT_FOUND(400,"书籍不存在");
-    ;
 
     public int code;
     public String message;

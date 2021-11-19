@@ -11,33 +11,38 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@TableName(BookDOField.TABLE_NAME)
+@TableName(DefaultDOField.TABLE_NAME)
 public class DefaultDO extends BaseDO {
 
-    @TableId(value = StorageDOField.ID, type = IdType.AUTO)
+    @TableId(value = DefaultDOField.ID, type = IdType.AUTO)
     private Long defaultId;
 
-    @TableField(value = StorageDOField.GMT_CREATE, fill = FieldFill.INSERT)
+    @TableField(value = DefaultDOField.GMT_CREATE, fill = FieldFill.INSERT)
     private Date gmtCreate;
 
-    @TableField(value = StorageDOField.GMT_MODIFIED, fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = DefaultDOField.GMT_MODIFIED, fill = FieldFill.INSERT_UPDATE)
     private Date gmtModified;
 
-    @TableField(StorageDOField.FEATURES)
+    @TableField(DefaultDOField.FEATURES)
     private String features;
 
-    @TableField(StorageDOField.DELETED)
+    @TableField(DefaultDOField.DELETED)
     @TableLogic(value = "0", delval = "1")
     private Integer deleted;
 
-    @TableField(StorageDOField.VERSION)
+    @TableField(DefaultDOField.VERSION)
     @Version
     private Integer version;
 
-    @TableField(StorageDOField.BOOKID)
-    private Long bookId;
+    @TableField(DefaultDOField.USERNAME)
+    private Long userName;
 
-    @TableField(StorageDOField.NUMBER)
-    @Version
-    private Integer number;
+    @TableField(DefaultDOField.TIME)
+    private Date time;
+
+    @TableField(DefaultDOField.REASON)
+    private String reason;
+
+    @TableField(DefaultDOField.VERSION)
+    private Integer price;
 }
