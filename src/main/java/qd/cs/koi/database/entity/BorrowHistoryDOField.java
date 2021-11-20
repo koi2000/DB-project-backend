@@ -13,6 +13,4 @@ public class BorrowHistoryDOField {
     public static final String GMT_FAKEEND = "bh_gmt_fakeend";
     public static final String GMT_REALEND = "bh_gmt_realend";
     public static final String BOOKID = "b_id";
-    public static final String BOOKNAME = "b_name";
-    public static final String AUTHOR = "b_author";
 }

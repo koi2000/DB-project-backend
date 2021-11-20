@@ -35,7 +35,7 @@ public class DefaultDO extends BaseDO {
     private Integer version;
 
     @TableField(DefaultDOField.USERNAME)
-    private Long userName;
+    private String userName;
 
     @TableField(DefaultDOField.TIME)
     private Date time;

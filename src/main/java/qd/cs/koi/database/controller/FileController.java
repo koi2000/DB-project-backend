@@ -86,7 +86,7 @@ public class FileController {
     }
 
     @GetMapping(value = "/queryByMd5")
-    @ApiResponseBody
+    @ResponseBody
     public FileDTO queryByMd5(@RequestParam("md5") String md5) {
         return fileService.queryByMd5(md5);
     }

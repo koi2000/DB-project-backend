@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
-@WebFilter(urlPatterns = "/*",filterName = "channelFilter")
+//@WebFilter(urlPatterns = "/*",filterName = "channelFilter")
 public class ChannelFilter implements Filter {
 
     @Override

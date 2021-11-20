@@ -34,4 +34,6 @@ public class BookCreateDTO extends BaseDTO {
     private List<String> classification;
 
     private int price;
+
+    private int number;
 }

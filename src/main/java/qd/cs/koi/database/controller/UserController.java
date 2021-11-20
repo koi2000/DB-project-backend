@@ -58,14 +58,15 @@ public class UserController {
                                                 @RequestParam("passWord") String password
     ) throws Exception {
 
+        UserSessionDTO userSessionDTO=null;
         if (StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password)) {
             // 登录校验
-            UserSessionDTO userSessionDTO = this.userService.login(username, password);
+            userSessionDTO = this.userService.login(username, password);
 
             writeSessionToHeader(response, userSessionDTO);
-            return ResponseResult.ok(userSessionDTO);
         }
-        return ResponseResult.error();
+        return ResponseResult.ok(userSessionDTO);
+        //return ResponseResult.error();
     }
 
 

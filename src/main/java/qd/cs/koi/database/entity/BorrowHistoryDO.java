@@ -47,10 +47,4 @@ public class BorrowHistoryDO extends BaseDO {
 
     @TableField(BorrowHistoryDOField.BOOKID)
     private Long bookId;
-
-    @TableField(BorrowHistoryDOField.BOOKNAME)
-    private String bookName;
-
-    @TableField(BorrowHistoryDOField.AUTHOR)
-    private String author;
 }

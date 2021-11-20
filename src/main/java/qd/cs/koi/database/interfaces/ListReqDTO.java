@@ -1,4 +1,4 @@
-package qd.cs.koi.database.interfaces.Book;
+package qd.cs.koi.database.interfaces;
 
 import lombok.*;
 import qd.cs.koi.database.utils.entity.BaseDTO;
@@ -8,9 +8,10 @@ import qd.cs.koi.database.utils.entity.BaseDTO;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class BookListReqDTO extends BaseDTO {
+public class ListReqDTO extends BaseDTO {
     private int pageNow;
     private int pageSize;
     private String sortBy;
     private Boolean ascending = false;
+    private String type;
 }

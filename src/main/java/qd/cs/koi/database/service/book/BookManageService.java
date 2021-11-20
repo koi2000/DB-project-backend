@@ -2,6 +2,7 @@ package qd.cs.koi.database.service.book;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import qd.cs.koi.database.converter.BookCreateConverter;
 import qd.cs.koi.database.dao.BookDao;
 import qd.cs.koi.database.dao.StorageDao;
@@ -23,9 +24,15 @@ public class BookManageService {
     @Autowired
     StorageDao storageDao;
 
+    @Transactional
     public Long create(BookCreateDTO bookCreateDTO){
         BookDO bookDO = bookCreateConverter.from(bookCreateDTO);
         AssertUtils.isTrue(bookDao.save(bookDO), ApiExceptionEnum.UNKNOWN_ERROR);
+        StorageDO storageDO = StorageDO.builder()
+                .bookId(bookDO.getBookId())
+                .number(bookCreateDTO.getNumber())
+                .build();
+        AssertUtils.isTrue(storageDao.save(storageDO),ApiExceptionEnum.UNKNOWN_ERROR);
         return bookDO.getBookId();
     }
 

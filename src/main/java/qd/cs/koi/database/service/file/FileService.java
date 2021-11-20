@@ -66,6 +66,7 @@ public class FileService {
         // 查询是否已有相同 MD5
         FileDO fileDO = fileDao.lambdaQuery().eq(FileDO::getMd5, md5).one();
         if (fileDO != null) {
+            AssertUtils.notNull(fileDO,ApiExceptionEnum.FILE_MD5_EXISTS);
             return fileConverter.to(fileDO);
         }
 
