@@ -45,4 +45,13 @@ public class BookManageService {
         AssertUtils.isTrue(storageDao.save(storageDO),ApiExceptionEnum.UNKNOWN_ERROR);
         return number;
     }
+
+    public Long updateBook(BookCreateDTO bookCreateDTO) {
+        BookDO bookDO = bookDao.getById(bookCreateDTO);
+        AssertUtils.notNull(bookDO,ApiExceptionEnum.BOOK_NOT_FOUND);
+        BookDO update = bookCreateConverter.from(bookCreateDTO);
+        update.setBookId(bookDO.getBookId());
+        AssertUtils.notNull(bookDao.updateById(update),ApiExceptionEnum.UNKNOWN_ERROR);
+        return bookDO.getBookId();
+    }
 }

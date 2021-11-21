@@ -118,13 +118,19 @@ public class BookService {
     public Date returnBook(UserSessionDTO userSessionDTO,Long bookHistoryId){
         BorrowHistoryDO borrowHistoryDO = borrowHistoryDao.getById(bookHistoryId);
         AssertUtils.notNull(borrowHistoryDO,ApiExceptionEnum.HISTORY_NOT_FOUND);
-        StorageDO storageDO = storageDao.getById(borrowHistoryDO.getBookId());
+        //根据书籍得到库存
+        StorageDO storageDO = storageDao.lambdaQuery().eq(StorageDO::getBookId,borrowHistoryDO.getBookId())
+                .one();
         if(storageDO==null){
-            storageDO.setBookId(borrowHistoryDO.getBookId());
-            storageDO.setNumber(0);
+            storageDO = StorageDO.builder()
+                    .bookId(borrowHistoryDO.getBookId())
+                    .number(0)
+                    .build();
+            AssertUtils.isTrue(storageDao.save(storageDO),ApiExceptionEnum.UNKNOWN_ERROR);
         }
+
         storageDO.setNumber(storageDO.getNumber()+1);
-        storageDao.updateById(storageDO);
+        AssertUtils.isTrue(storageDao.updateById(storageDO),ApiExceptionEnum.UNKNOWN_ERROR);
         borrowHistoryDO.setRealTime(new Date());
         //说明时间已超出
         if(borrowHistoryDO.getShouldTime().before(borrowHistoryDO.getRealTime())){
@@ -136,6 +142,7 @@ public class BookService {
                     .build();
             AssertUtils.isTrue(defaultDao.save(defaultDO),ApiExceptionEnum.UNKNOWN_ERROR);
         }
+        AssertUtils.isTrue(borrowHistoryDao.updateById(borrowHistoryDO),ApiExceptionEnum.UNKNOWN_ERROR);
         return borrowHistoryDO.getRealTime();
     }
 }

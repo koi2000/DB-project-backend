@@ -20,9 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 public enum DefaultEnum {
 
-    OUTOFTIME("outoftime"),
+    OUTOFTIME("Out Of Time"),
 
-    BROWKEN("browken"),
+    BROKEN("Broken"),
     ;
 
     public String name;

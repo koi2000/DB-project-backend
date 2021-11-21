@@ -64,14 +64,15 @@ public class WebSocket {
 	 * @param message
 	 */
 	@OnMessage
-	public void onMessage(String message) {
+	public void onMessage(String message) throws IOException {
 		System.out.println(this.id + "发来消息：" + message);
-		try {
+		sendMessageToId(this.id,"你好"+ChineseName.getChinese());
+		/*try {
 			System.out.println("发出消息"+message);
-			this.sendMessageToAll(message);
+			this.sendMessageToAll(this.id+":"+message);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	/**

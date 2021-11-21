@@ -32,4 +32,10 @@ public class BookManageController {
     public int changeNumber(Long bookId,int number){
         return bookManageService.changeNumber(bookId,number);
     }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public Long updateBook(@RequestBody @Valid BookCreateDTO bookCreateDTO) {
+        return bookManageService.updateBook(bookCreateDTO);
+    }
 }
