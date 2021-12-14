@@ -9,6 +9,8 @@ import qd.cs.koi.database.dao.StorageDao;
 import qd.cs.koi.database.entity.BookDO;
 import qd.cs.koi.database.entity.StorageDO;
 import qd.cs.koi.database.interfaces.Book.BookCreateDTO;
+import qd.cs.koi.database.service.file.FileService;
+import qd.cs.koi.database.utils.entity.UserSessionDTO;
 import qd.cs.koi.database.utils.web.ApiExceptionEnum;
 import qd.cs.koi.database.utils.web.AssertUtils;
 
@@ -16,16 +18,19 @@ import qd.cs.koi.database.utils.web.AssertUtils;
 public class BookManageService {
 
     @Autowired
-    BookDao bookDao;
+    private BookDao bookDao;
 
     @Autowired
-    BookCreateConverter bookCreateConverter;
+    private BookCreateConverter bookCreateConverter;
 
     @Autowired
-    StorageDao storageDao;
+    private StorageDao storageDao;
+
+    @Autowired
+    private FileService fileService;
 
     @Transactional
-    public Long create(BookCreateDTO bookCreateDTO){
+    public Long create(UserSessionDTO userSessionDTO,BookCreateDTO bookCreateDTO){
         BookDO bookDO = bookCreateConverter.from(bookCreateDTO);
         AssertUtils.isTrue(bookDao.save(bookDO), ApiExceptionEnum.UNKNOWN_ERROR);
         StorageDO storageDO = StorageDO.builder()
@@ -33,6 +38,9 @@ public class BookManageService {
                 .number(bookCreateDTO.getNumber())
                 .build();
         AssertUtils.isTrue(storageDao.save(storageDO),ApiExceptionEnum.UNKNOWN_ERROR);
+        if(bookCreateDTO.getImage()!=null){
+            fileService.upload(bookCreateDTO.getImage(),userSessionDTO.getUserId(),bookCreateDTO.getBookId());
+        }
         return bookDO.getBookId();
     }
 

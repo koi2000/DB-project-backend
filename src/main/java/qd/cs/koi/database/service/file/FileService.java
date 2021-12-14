@@ -51,7 +51,7 @@ public class FileService {
     BookDao bookDao;
 
     @Transactional
-    public FileDTO upload(MultipartFile file, Long userId,Long bookId) {
+    public FileDTO upload(MultipartFile file, Long userId, Long bookId) {
         //首先查看书籍是否存在
         BookDO bookDO = bookDao.getById(bookId);
         AssertUtils.notNull(bookDO,ApiExceptionEnum.BOOK_NOT_FOUND);

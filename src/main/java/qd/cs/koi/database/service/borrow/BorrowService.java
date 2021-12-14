@@ -4,20 +4,12 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import qd.cs.koi.database.converter.BaseConvertUtils;
 import qd.cs.koi.database.dao.BorrowHistoryDao;
-import qd.cs.koi.database.entity.BookDO;
 import qd.cs.koi.database.entity.BorrowHistoryDO;
-import qd.cs.koi.database.interfaces.Book.BookListDTO;
 import qd.cs.koi.database.interfaces.ListReqDTO;
-import qd.cs.koi.database.interfaces.borrow.BorrowListDTO;
 import qd.cs.koi.database.utils.annations.UserSession;
 import qd.cs.koi.database.utils.entity.UserSessionDTO;
 import qd.cs.koi.database.utils.web.PageResult;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BorrowService {

@@ -57,6 +57,7 @@ public class BookService {
                     .author(o.getAuthor())
                     .keyWord(BaseConvertUtils.stringToList(o.getKeyWord()))
                     .img(o.getImg())
+                    .description(o.getDescription())
                     .build();
             return build;
         }).collect(Collectors.toList());

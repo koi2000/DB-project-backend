@@ -1,4 +1,4 @@
-package qd.cs.koi.database.interfaces.borrow;
+package qd.cs.koi.database.interfaces.Borrow;
 
 import lombok.*;
 import qd.cs.koi.database.utils.entity.BaseDTO;

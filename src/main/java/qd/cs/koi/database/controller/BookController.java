@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import qd.cs.koi.database.entity.BorrowHistoryDO;
 import qd.cs.koi.database.interfaces.Book.*;
 import qd.cs.koi.database.interfaces.ListReqDTO;
-import qd.cs.koi.database.interfaces.borrow.BorrowListDTO;
 import qd.cs.koi.database.service.book.BookService;
 import qd.cs.koi.database.service.borrow.BorrowService;
 import qd.cs.koi.database.utils.annations.UserSession;
@@ -33,6 +32,7 @@ public class BookController {
     @Autowired
     BorrowService borrowService;
 
+    @CrossOrigin
     @PostMapping("/list")
     @ResponseBody
     public PageResult<BookListDTO> list(@RequestBody ListReqDTO listReqDTO){

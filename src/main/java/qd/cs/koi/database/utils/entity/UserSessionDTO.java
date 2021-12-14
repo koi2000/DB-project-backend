@@ -11,6 +11,7 @@
 package qd.cs.koi.database.utils.entity;
 
 import lombok.*;
+import qd.cs.koi.database.utils.Enums.PermissionEnum;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -53,5 +54,25 @@ public class UserSessionDTO extends BaseDTO {
 
     public boolean userInGroups(Collection<Long> groupIdList) {
         return !Collections.disjoint(groups, groupIdList);
+    }
+
+    public boolean userIsAdmin(){
+        boolean is = false;
+        for(int i=0;i<roles.size();i++){
+            if(roles.get(i).equals(PermissionEnum.ADMIN.name)||roles.get(i).equals(PermissionEnum.SUPERADMIN.name)){
+                is = true;
+            }
+        }
+        return is;
+    }
+
+    public boolean userIsSuperAdmin(){
+        boolean is = false;
+        for(int i=0;i<roles.size();i++){
+            if(roles.get(i).equals(PermissionEnum.SUPERADMIN.name)){
+                is = true;
+            }
+        }
+        return is;
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import qd.cs.koi.database.converter.BookCreateConverter;
 import qd.cs.koi.database.interfaces.Book.BookCreateDTO;
 import qd.cs.koi.database.service.book.BookManageService;
+import qd.cs.koi.database.utils.annations.UserSession;
+import qd.cs.koi.database.utils.entity.UserSessionDTO;
 
 import javax.validation.Valid;
 
@@ -24,8 +26,9 @@ public class BookManageController {
 
     @PostMapping("/create")
     @ResponseBody
-    public Long createBook(@RequestBody @Valid BookCreateDTO bookCreateDTO) {
-        return bookManageService.create(bookCreateDTO);
+    public Long createBook(@RequestBody @Valid BookCreateDTO bookCreateDTO,
+                           @UserSession UserSessionDTO userSessionDTO) {
+        return bookManageService.create(userSessionDTO,bookCreateDTO);
     }
 
     @GetMapping("/changeNumber")

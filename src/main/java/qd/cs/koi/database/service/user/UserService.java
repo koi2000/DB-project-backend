@@ -23,6 +23,7 @@ import qd.cs.koi.database.utils.web.ApiExceptionEnum;
 import qd.cs.koi.database.utils.web.AssertUtils;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,10 +53,15 @@ public class UserService {
 
     @Transactional
     public UserSessionDTO register(UserDTO userDTO) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add(PermissionEnum.USER.name);
+        userDTO.setRoles(arrayList);
+
         UserDO userDO = userConverter.from(userDTO);
         userDO.setSalt(CodecUtils.generateSalt());
         userDO.setPassword(CodecUtils.md5Hex(userDO.getPassword(), userDO.getSalt()));
         userDO.setRoles(PermissionEnum.USER.name);
+
         if (StringUtils.isBlank(userDO.getNickname())) {
             userDO.setNickname(userDO.getUsername());
         }

@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.web.multipart.MultipartFile;
 import qd.cs.koi.database.utils.entity.BaseDTO;
 
 import javax.validation.constraints.Email;
@@ -36,4 +37,6 @@ public class BookCreateDTO extends BaseDTO {
     private int price;
 
     private int number;
+
+    private MultipartFile image;
 }

@@ -26,7 +26,8 @@ public class CorsFilter implements Filter {
             hresp.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             //跨域 Header
             hresp.setHeader("Access-Control-Allow-Methods", "*");
-            hresp.setHeader("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
+            hresp.setHeader("Access-Control-Allow-Headers", "*");
+            hresp.setHeader("Access-Control-Allow-Headers","x-requested-with");
             hresp.setHeader("Access-Control-Allow-Credentials","true");
             // 浏览器是会先发一次options请求，如果请求通过，则继续发送正式的post请求
 

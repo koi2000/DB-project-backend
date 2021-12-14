@@ -27,7 +27,6 @@ public enum PermissionEnum {
     USER("user"),
 
     ;
-
     public String name;
 
     public boolean notIn(UserSessionDTO userSessionDTO) {
@@ -48,6 +47,7 @@ public enum PermissionEnum {
                 return true;
             }
         }
+
         return false;
     }
 

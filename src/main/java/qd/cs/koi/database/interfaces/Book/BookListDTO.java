@@ -25,6 +25,8 @@ public class BookListDTO extends BaseDTO {
 
     private List<String> keyWord;
 
+    private String description;
+
     private String img;
 
 }
