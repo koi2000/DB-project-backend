@@ -1,7 +1,6 @@
 package qd.cs.koi.database.service.file;
 
 
-
 import com.google.common.io.Files;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -54,7 +53,7 @@ public class FileService {
     public FileDTO upload(MultipartFile file, Long userId, Long bookId) {
         //首先查看书籍是否存在
         BookDO bookDO = bookDao.getById(bookId);
-        AssertUtils.notNull(bookDO,ApiExceptionEnum.BOOK_NOT_FOUND);
+        AssertUtils.notNull(bookDO, ApiExceptionEnum.BOOK_NOT_FOUND);
 
         // 计算文件 md5
         String md5;
@@ -66,7 +65,7 @@ public class FileService {
         // 查询是否已有相同 MD5
         FileDO fileDO = fileDao.lambdaQuery().eq(FileDO::getMd5, md5).one();
         if (fileDO != null) {
-            AssertUtils.notNull(fileDO,ApiExceptionEnum.FILE_MD5_EXISTS);
+            AssertUtils.notNull(fileDO, ApiExceptionEnum.FILE_MD5_EXISTS);
             return fileConverter.to(fileDO);
         }
 
@@ -82,10 +81,10 @@ public class FileService {
         AssertUtils.isTrue(fileDao.save(fileDO), ApiExceptionEnum.SERVER_BUSY);
 
         bookDO.setImg(id.toString());
-        AssertUtils.isTrue(bookDao.updateById(bookDO),ApiExceptionEnum.UNKNOWN_ERROR);
+        AssertUtils.isTrue(bookDao.updateById(bookDO), ApiExceptionEnum.UNKNOWN_ERROR);
 
         try {
-            File writeFile = new File(Paths.get(fileSystemProperties.getBaseDir(), id.toString()).toString()+"."+fileDO.getExtensionName());
+            File writeFile = new File(Paths.get(fileSystemProperties.getBaseDir(), id.toString()).toString() + "." + fileDO.getExtensionName());
             //File writeFile = new File(Paths.get(fileSystemProperties.getBaseDir(), id.toString()).toString());
             byte[] bytes = file.getBytes();
             FileUtils.writeByteArrayToFile(writeFile, bytes);

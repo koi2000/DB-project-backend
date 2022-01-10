@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020-01-12
  * @version 1.0.0
  */
-@ServerEndpoint("/WebSocket/{id}")
-@RestController
+//@ServerEndpoint("/WebSocket/{id}")
+//@RestController
 public class WebSocket {
 
 	// 存储会话

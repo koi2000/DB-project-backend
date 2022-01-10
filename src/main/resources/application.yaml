@@ -1,7 +1,36 @@
 server:
   port: 8002
 
+file:
+  staticAccessPath:/upload/**
+
 spring:
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /dist/**,/upload/**
+
+  redis:
+    host: 152.136.26.27
+    database: 5
+    port: 6379
+    password: "123456"
+    jedis:
+      pool:
+        max-active: 50
+        max-idle: 20
+        min-idle: 5
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 5MB
+      max-request-size: 10MB
+      location: /image
+
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,6 +46,7 @@ spring:
       maximum-pool-size: 200
       minimum-idle: 10
       read-only: false
+
 mybatis:
   type-aliases-package: qd.cs.koi.database.entity
 

@@ -13,6 +13,7 @@ import qd.cs.koi.database.converter.UserSessionConverter;
 import qd.cs.koi.database.dao.UserDao;
 import qd.cs.koi.database.entity.UserDO;
 import qd.cs.koi.database.interfaces.User.UserDTO;
+import qd.cs.koi.database.interfaces.User.UserListReqDTO;
 import qd.cs.koi.database.interfaces.User.UserProfileDTO;
 import qd.cs.koi.database.interfaces.User.UserUpdateDTO;
 import qd.cs.koi.database.utils.Enums.PermissionEnum;
@@ -25,6 +26,7 @@ import qd.cs.koi.database.utils.web.AssertUtils;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -40,7 +42,6 @@ public class UserService {
 
     @Transactional
     public UserSessionDTO login(String username, String password) throws ApiException {
-
         UserDO userDO = null;
         try {
             userDO = verifyAndGetDO(username, password);
@@ -68,17 +69,16 @@ public class UserService {
 
         try {
             AssertUtils.isTrue(userDao.save(userDO), ApiExceptionEnum.UNKNOWN_ERROR);
-        }
-        catch (DuplicateKeyException e) {
+        } catch (DuplicateKeyException e) {
             throw new ApiException(ApiExceptionEnum.USER_EXIST);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ApiException(ApiExceptionEnum.UNKNOWN_ERROR);
         }
 
         return loginWithWritingSession(userDO);
     }
 
-    public Long update(UserSessionDTO userSessionDTO,UserUpdateDTO userUpdateDTO){
+    public Long update(UserSessionDTO userSessionDTO, UserUpdateDTO userUpdateDTO) {
         String salt = CodecUtils.generateSalt();
 
         boolean update = userDao.lambdaUpdate().set(UserDO::getNickname, userUpdateDTO.getNickname())
@@ -87,15 +87,15 @@ public class UserService {
                 .set(UserDO::getPhone, userUpdateDTO.getPhone())
                 .set(UserDO::getSalt, salt)
                 .set(UserDO::getPassword, CodecUtils.md5Hex(userUpdateDTO.getPassword(), salt))
-                .eq(UserDO::getUserId,userSessionDTO.getUserId())
+                .eq(UserDO::getUserId, userSessionDTO.getUserId())
                 .update();
-        AssertUtils.isTrue(update,ApiExceptionEnum.UNKNOWN_ERROR);
+        AssertUtils.isTrue(update, ApiExceptionEnum.UNKNOWN_ERROR);
         return userSessionDTO.getUserId();
     }
 
-    public UserProfileDTO getProfile(UserSessionDTO userSessionDTO){
+    public UserProfileDTO getProfile(UserSessionDTO userSessionDTO) {
         UserDO userDO = userDao.getById(userSessionDTO.getUserId());
-        AssertUtils.notNull(userDO,ApiExceptionEnum.USER_NOT_FOUND);
+        AssertUtils.notNull(userDO, ApiExceptionEnum.USER_NOT_FOUND);
         UserProfileDTO build = UserProfileDTO.builder()
                 .username(userDO.getUsername())
                 .nickname(userDO.getNickname())
@@ -108,7 +108,7 @@ public class UserService {
         return build;
     }
 
-    public UserSessionDTO test(){
+    public UserSessionDTO test() {
         userDao.save(UserDO.builder().build());
         return null;
     }
@@ -135,5 +135,16 @@ public class UserService {
                 .username(userDO.getUsername())
                 .build();
         return userSessionDTO;
+    }
+
+    public void search(UserListReqDTO reqDTO) {
+        LambdaQueryChainWrapper<UserDO> lambdaQuery = userDao.lambdaQuery();
+        Optional.ofNullable(reqDTO.getGender()).ifPresent(o -> {
+            lambdaQuery.eq(UserDO::getGender, o);
+        });
+
+        Optional.ofNullable(reqDTO.getSearchKey()).ifPresent(o -> {
+            lambdaQuery.like(UserDO::getUsername, o).like(UserDO::getNickname, o);
+        });
     }
 }

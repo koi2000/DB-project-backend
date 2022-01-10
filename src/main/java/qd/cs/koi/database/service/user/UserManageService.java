@@ -11,7 +11,6 @@
 package qd.cs.koi.database.service.user;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelReader;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.conditions.update.LambdaUpdateChainWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -28,19 +27,14 @@ import qd.cs.koi.database.entity.UserDO;
 import qd.cs.koi.database.entity.UserDOField;
 import qd.cs.koi.database.interfaces.User.*;
 import qd.cs.koi.database.utils.Enums.PermissionEnum;
-import qd.cs.koi.database.utils.entity.ResponseResult;
 import qd.cs.koi.database.utils.entity.UserSessionDTO;
 import qd.cs.koi.database.utils.util.CodecUtils;
-import qd.cs.koi.database.utils.util.DemoDataListener;
+import qd.cs.koi.database.utils.util.UserDataListener;
 import qd.cs.koi.database.utils.web.ApiException;
 import qd.cs.koi.database.utils.web.ApiExceptionEnum;
 import qd.cs.koi.database.utils.web.AssertUtils;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +79,6 @@ public class UserManageService {
                  .or(o1 -> o1.like(UserDO::getNickname, searchKey))
                  .or(o1 -> o1.like(UserDO::getPhone, searchKey))
                  .or(o1 -> o1.like(UserDO::getEmail, searchKey));
-
         });
         // 管理员尽量排前面
         query.last("ORDER BY LENGTH(" + UserDOField.ROLES + ") DESC, " + UserDOField.ID);
@@ -136,7 +129,6 @@ public class UserManageService {
                 userDO.setNickname(userDO.getUsername());
             }
         });
-
         userDao.saveBatch(userDOList);
     }
 
@@ -154,7 +146,7 @@ public class UserManageService {
             //文件输入流
             UserDao userDao = new UserDao();
             //调用方法进行读取
-            EasyExcel.read(file.getInputStream(), UserExcelDTO.class,new DemoDataListener(userDao)).sheet().doRead();
+            EasyExcel.read(file.getInputStream(), UserExcelDTO.class,new UserDataListener(userDao)).sheet().doRead();
         }catch(Exception e){
             throw new ApiException(ApiExceptionEnum.UNKNOWN_ERROR);
         }

@@ -1,21 +1,14 @@
 package qd.cs.koi.database.controller;
 
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelReader;
-import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import qd.cs.koi.database.dao.UserDao;
-import qd.cs.koi.database.interfaces.TeacherExcel;
 import qd.cs.koi.database.interfaces.User.UserDTO;
-import qd.cs.koi.database.interfaces.User.UserExcelDTO;
+import qd.cs.koi.database.interfaces.User.UserListReqDTO;
 import qd.cs.koi.database.interfaces.User.UserProfileDTO;
 import qd.cs.koi.database.interfaces.User.UserUpdateDTO;
 import qd.cs.koi.database.service.user.UserExtensionService;
@@ -23,20 +16,14 @@ import qd.cs.koi.database.service.user.UserService;
 import qd.cs.koi.database.utils.annations.UserSession;
 import qd.cs.koi.database.utils.entity.ResponseResult;
 import qd.cs.koi.database.utils.entity.UserSessionDTO;
-import qd.cs.koi.database.utils.util.DemoDataListener;
 import qd.cs.koi.database.utils.util.EncrypDES;
-import qd.cs.koi.database.utils.util.ExcelUtil;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -60,7 +47,7 @@ public class UserController {
     public ResponseResult<UserSessionDTO> register(HttpServletResponse response,
                                                    @Valid @RequestBody UserDTO userDTO) throws Exception {
         userDTO.setRoles(null);
-        UserSessionDTO userSessionDTO = this.userService.register(userDTO);
+        UserSessionDTO userSessionDTO = userService.register(userDTO);
         //UserSessionDTO userSessionDTO = this.userService.test();
         writeSessionToHeader(response, userSessionDTO);
         return ResponseResult.ok(userSessionDTO);
@@ -85,6 +72,12 @@ public class UserController {
         //return ResponseResult.error();
     }
 
+    //TODO:完成搜索接口
+    @GetMapping("/search")
+    @ResponseBody
+    public void search(UserListReqDTO reqDTO) {
+        userService.search(reqDTO);
+    }
 
     @GetMapping("/logout")
     @ResponseBody
@@ -119,6 +112,11 @@ public class UserController {
         return ResponseResult.ok(update);
     }
 
+    @GetMapping("/isManage")
+    @ResponseBody
+    public boolean isManage(@UserSession UserSessionDTO userSessionDTO){
+        return userSessionDTO != null && userSessionDTO.userIsAdmin();
+    }
 
 
     private void writeSessionToHeader(@NotNull HttpServletResponse response,
@@ -174,7 +172,7 @@ public class UserController {
         try {
             //TeacherExcel.class对应的是和模板一样的实体类，
             //eduTeacherService对应持久层的接口
-            excelReader = EasyExcel.read(finameUrl, TeacherExcel.class, new DemoDataListener(eduTeacherService)).build();
+            excelReader = EasyExcel.read(finameUrl, TeacherExcel.class, new UserDataListener(eduTeacherService)).build();
             ReadSheet readSheet = EasyExcel.readSheet(0).build();
             excelReader.read(readSheet);
         } finally {

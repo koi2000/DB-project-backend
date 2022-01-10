@@ -64,6 +64,9 @@ public enum ApiExceptionEnum {
     USER_EXIST(400, "用户名已存在或邮箱已被使用"),
     EMAIL_EXIST(400, "邮箱已存在"),
 
+    HISTORY_IS_NULL(400,"借阅记录不存在"),
+    REBORROW_TIME_ERROR(400,"续借时间出错"),
+    USER_NOT_MATCH(400,"续借时间出错"),
     HISTORY_NOT_FOUND(400,"借书记录不存在"),
     TIME_TOO_LONG(400,"借书时间过长"),
     BOOK_NOT_ENOUGH(400,"书籍数量不足"),

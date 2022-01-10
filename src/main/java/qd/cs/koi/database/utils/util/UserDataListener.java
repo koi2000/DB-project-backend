@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qd.cs.koi.database.dao.UserDao;
 import qd.cs.koi.database.entity.UserDO;
-import qd.cs.koi.database.interfaces.TeacherExcel;
 import qd.cs.koi.database.interfaces.User.UserExcelDTO;
-import qd.cs.koi.database.service.user.UserService;
 import qd.cs.koi.database.utils.Enums.PermissionEnum;
 import qd.cs.koi.database.utils.web.ApiExceptionEnum;
 import qd.cs.koi.database.utils.web.AssertUtils;
@@ -19,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// 有个很重要的点 DemoDataListener 不能被spring管理，要每次读取excel都要new,然后里面用到spring可以构造方法传进去
-public class DemoDataListener extends AnalysisEventListener<UserExcelDTO> {
-        private static final Logger LOGGER = LoggerFactory.getLogger(DemoDataListener.class);
+// 有个很重要的点 UserDataListener 不能被spring管理，要每次读取excel都要new,然后里面用到spring可以构造方法传进去
+public class UserDataListener extends AnalysisEventListener<UserExcelDTO> {
+        private static final Logger LOGGER = LoggerFactory.getLogger(UserDataListener.class);
         //这里写持久层的类
         private UserDao userDao;
 
@@ -29,7 +27,7 @@ public class DemoDataListener extends AnalysisEventListener<UserExcelDTO> {
          * 如果使用了spring,请使用这个构造方法。每次创建Listener的时候需要把spring管理的类传进来
          */
 
-        public DemoDataListener( UserDao userDao) {
+        public UserDataListener(UserDao userDao) {
             this.userDao = userDao;
         }
 
@@ -43,7 +41,7 @@ public class DemoDataListener extends AnalysisEventListener<UserExcelDTO> {
          * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
          */
         //private DemoDAO demoDAO;
-        public DemoDataListener() {
+        public UserDataListener() {
             // 这里是demo，所以随便new一个。实际使用如果到了spring,请使用下面的有参构造函数
             //demoDAO = new DemoDAO();
         }
@@ -52,7 +50,7 @@ public class DemoDataListener extends AnalysisEventListener<UserExcelDTO> {
          *
          * @param demoDAO
          */
-       /* public DemoDataListener(DemoDAO demoDAO) {
+       /* public UserDataListener(DemoDAO demoDAO) {
             this.demoDAO = demoDAO;
         }*/
         /**

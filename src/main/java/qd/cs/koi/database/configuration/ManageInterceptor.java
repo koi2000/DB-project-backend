@@ -51,7 +51,7 @@ public class ManageInterceptor extends HandlerInterceptorAdapter {
 
         AtomicBoolean isManage = new AtomicBoolean(false);
         userSessionDTO.getRoles().forEach(o->{
-            if(o.equals("admin")){
+            if(o.equals("admin")||o.equals("superadmin")){
                 isManage.set(true);
             }
         });

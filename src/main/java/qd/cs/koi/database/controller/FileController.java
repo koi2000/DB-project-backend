@@ -3,8 +3,10 @@ package qd.cs.koi.database.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import qd.cs.koi.database.dao.FileDao;
 import qd.cs.koi.database.entity.FileDO;
 import qd.cs.koi.database.interfaces.File.FileDTO;
@@ -18,12 +20,16 @@ import qd.cs.koi.database.utils.web.AssertUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -41,9 +47,23 @@ public class FileController {
 
     @PostMapping(value = "/upload")
     @ResponseBody
-    public FileDTO upload(@RequestParam("file") @NotNull MultipartFile file,
-                          @RequestParam("bookId") @NotNull Long bookId,
+    public FileDTO upload(//HttpServletRequest request,
+                          @RequestParam("file") MultipartFile file,
+                          @RequestParam("bookId")Long bookId,
                           @UserSession UserSessionDTO userSessionDTO) {
+        /*MultipartHttpServletRequest multipartRequest=(MultipartHttpServletRequest) request;
+        MultipartFile file = multipartRequest.getFile("file");//file是form-data中二进制字段对应的name
+        Enumeration<String> attributeNames = multipartRequest.getAttributeNames();
+        multipartRequest.getAttribute("file");
+        MultiValueMap<String, MultipartFile> multiFileMap = multipartRequest.getMultiFileMap();
+        Enumeration<String> parameterNames = multipartRequest.getParameterNames();
+
+        List<MultipartFile> file1 = multipartRequest.getFiles("file");
+
+        Iterator<String> fileNames = multipartRequest.getFileNames();
+
+        Long bookId = Long.parseLong(multipartRequest.getParameter("bookId"));
+        String file2 = multipartRequest.getParameter("file");*/
         return fileService.upload(file, userSessionDTO.getUserId(),bookId);
     }
 

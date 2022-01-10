@@ -26,7 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //registry.addInterceptor(tokenInterceptor).addPathPatterns("/manage/**");
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/user/login", "/user/register", "/imserver/**", "/files/**", "/alipay/**",
+                        "/doc.html", "/webjars/**", "/swagger-resources/**");
+
         registry.addInterceptor(manageInterceptor).addPathPatterns("/manage/**");
     }
 
@@ -36,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(userSessionMethodArgumentResolver);
     }
 
-    /*
+
     //配置跨域
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -48,6 +51,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true)			   //是否允许附带身份凭证和cookies
                 .maxAge(1800)					   //预见请求有效时间
                 .exposedHeaders("custom-header");  //允许浏览器访问的响应头,有自定义响应头就写进去
-    }*/
+    }
 
 }

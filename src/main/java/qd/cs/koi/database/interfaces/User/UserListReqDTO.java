@@ -26,10 +26,11 @@ public class UserListReqDTO extends BaseDTO {
 
     private String username;
     private String nickname;
-    private String studentId;
     private String phone;
+    private String gender;
     private String email;
     private String sduId;
+    private String role;
 
     private String searchKey;
 }
